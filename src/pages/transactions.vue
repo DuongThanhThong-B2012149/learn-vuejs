@@ -11,25 +11,41 @@
         }"
         >{{ transaction.name }}</router-link
       >
+
       <div class="">Price: {{ transaction.price }}</div>
     </div>
+  </div>
+  <div class="" v-else-if="error">
+    <p style="color: 'red'">{{ error.message }}</p>
   </div>
   <div class="" v-else>Loading...</div>
 </template>
 
 <script>
+import { ref } from "@vue/reactivity";
 export default {
-  data() {
-    return {
-      transactions: [],
+  setup() {
+    const transactions = ref([]);
+    const error = ref(null);
+
+    const getData = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/transactions`);
+        if (!response.ok) throw new Error("Something went wrong");
+
+        const data = await response.json();
+        transactions.value = data;
+      } catch (err) {
+        error.value = err;
+        console.log(error.value);
+      }
     };
-  },
-  created() {
-    fetch("http://localhost:3000/transactions")
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => (this.transactions = data));
+    getData();
+
+    return {
+      transactions,
+      error,
+    };
   },
 };
 </script>
