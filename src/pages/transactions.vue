@@ -22,24 +22,11 @@
 </template>
 
 <script>
-import { ref } from "@vue/reactivity";
+import useTransaction from "../uses/fetchTransaction";
 export default {
   setup() {
-    const transactions = ref([]);
-    const error = ref(null);
+    const { error, transactions, getData } = useTransaction();
 
-    const getData = async () => {
-      try {
-        const response = await fetch(`http://localhost:3000/transactions`);
-        if (!response.ok) throw new Error("Something went wrong");
-
-        const data = await response.json();
-        transactions.value = data;
-      } catch (err) {
-        error.value = err;
-        console.log(error.value);
-      }
-    };
     getData();
 
     return {
