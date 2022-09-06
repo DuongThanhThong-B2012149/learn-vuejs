@@ -1,27 +1,19 @@
 <template>
-  <h1>Overview page is here... {{ count }}</h1>
-  {{ transactions }}
+  <h1>Overview page is here...</h1>
 </template>
 
 <script>
-import { ref } from "@vue/reactivity";
-import useTransaction from "../uses/fetchTransaction";
 export default {
-  props: {
-    theme: {
-      type: String,
-      default: "light",
-    },
+  data() {
+    return {
+      count: 1000,
+    };
   },
-  setup({ theme }, { emit }) {
-    const { transactions, getData } = useTransaction();
-    getData();
-
-    const count = ref(0);
-
-    console.log(theme);
-    console.log(emit);
-    return { count, transactions };
+  created() {
+    // console.log(this.$store.state.count);
+    // console.log(this.$store.state.transactions);
+    // console.log(this.$store.getters.transactionFiltered);
+    this.count = this.$store.state.count;
   },
 };
 </script>

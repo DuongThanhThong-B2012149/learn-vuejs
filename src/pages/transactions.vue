@@ -16,18 +16,26 @@
     </div>
   </div>
   <div class="" v-else-if="error">
-    <p style="color: 'red'">{{ error.message }}</p>
+    <p style="color: 'red'">{{ error }}</p>
   </div>
   <div class="" v-else>Loading...</div>
 </template>
 
 <script>
-import useTransaction from "../uses/fetchTransaction";
+import { useStore } from "vuex";
+import { computed, ref } from "@vue/runtime-core";
 export default {
   setup() {
-    const { error, transactions, getData } = useTransaction();
+    const store = useStore();
+    console.log(store.state.transaction.transactions);
+    store.dispatch("transaction/fetchTransactions");
+    const transactions = computed(() => {
+      return store.state.transaction.transactions;
+    });
 
-    getData();
+    const error = computed(() => {
+      return store.state.transaction.error;
+    });
 
     return {
       transactions,

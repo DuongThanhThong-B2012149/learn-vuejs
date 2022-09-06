@@ -4,5 +4,5 @@ import router from "./router";
 // Make sure to _use_ the router instance to make the
 // whole app router-aware.
 import "./assets/main.css";
-
-createApp(App).use(router).mount("#app");
+import store from "./store";
+createApp(App).use(router).use(store).mount("#app");
